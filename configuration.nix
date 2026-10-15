@@ -121,7 +121,7 @@ in
   services.udev.extraRules = ''
     SUBSYSTEM=="usb", ATTR{idVendor}=="0483", ATTR{idProduct}=="5740", MODE="0666", GROUP="dialout"
   '';
-  # ReoasTime End
+  # RoasTime End
 
   # List packages installed in system profile.
   # You can use https://search.nixos.org/ to find more packages (and options).
