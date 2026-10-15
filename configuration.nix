@@ -5,7 +5,36 @@
 { config, pkgs, ... }:
 
 let
+  # 1. For RoasTime package
   roastime = pkgs.callPackage ./roastime.nix { };
+
+  # 2. Geminin icon asset
+  gemini-icon = pkgs.fetchurl {
+    url = "https://www.gstatic.com/lamda/images/gemini_sparkle_v002_d4735304ff6292a690345.svg";
+    hash = "sha256-AYIUlFk7gf/X2g4IKH1HNTBP9ikqaQNFMyi50Xzzh5k=";
+  };
+
+  # 3. Gemini desktop entry
+  gemini-desktop = pkgs.symlinkJoin {
+    name = "gemini-desktop";
+    paths = [
+      (pkgs.makeDesktopItem {
+        name = "gemini";
+        desktopName = "Google Gemini";
+        genericName = "AI Assistant";
+        comment = "Google Gemini Conversational AI";
+        exec = "${pkgs.brave}/bin/brave --app=https://gemini.google.com/app %U";
+        icon = "google-gemini";
+        terminal = false;
+        categories = [ "Network" "Utility" "Chat" ];
+        startupWMClass = "gemini.google.com";
+      })
+    ];
+    postBuild = ''
+      mkdir -p $out/share/icons/hicolor/scalable/apps
+      ln -s ${gemini-icon} $out/share/icons/hicolor/scalable/apps/google-gemini.svg
+    '';
+  };  
 in
 
 {
@@ -132,6 +161,7 @@ in
     wget
     appimage-run
     brave
+    gemini-desktop
     git
     hicolor-icon-theme
     adwaita-icon-theme
