@@ -213,7 +213,8 @@ in
   nix.gc = {
     automatic = true;
     dates = "weekly";
-    options = "--delete-older-than-30d";
+    options = "--delete-older-than-14d";
   };
-
+  # Automatically deduplicate identical files via hardlinks
+  nix.settings.auto-optimise-store = true;
 }
